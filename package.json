@@ -1,0 +1,28 @@
+{
+  "name": "blog-res-api",
+  "version": "1.0.0",
+  "description": "Restful blog api",
+  "keywords": [
+    "blog",
+    "api",
+    "restful",
+    "reset",
+    "api"
+  ],
+  "license": "ISC",
+  "author": "Muhamad Rifqi",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10"
+  }
+}
