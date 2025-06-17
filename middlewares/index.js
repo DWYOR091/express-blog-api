@@ -1,3 +1,4 @@
 const errorHandler = require('./errorHandler');
+const notFoundError = require('./notFound');
 
-module.exports = { errorHandler }
+module.exports = { errorHandler, notFoundError }

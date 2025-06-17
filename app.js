@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const connectMongodb = require('./init/mongodb')
 const morgan = require('morgan')
 const { authRoute } = require('./routes')
-const { errorHandler } = require('./middlewares');
+const { errorHandler, notFoundError } = require('./middlewares');
 
 
 //init app
@@ -19,6 +19,9 @@ app.use(morgan('dev'))
 
 //routes section
 app.use('/api/v1/auth', authRoute)
+
+//not found route
+app.use(notFoundError);
 
 //error handler
 app.use(errorHandler)
