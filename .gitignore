@@ -1,0 +1,66 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+/.nyc_output
+
+# Production
+/build
+/dist
+/public/build
+/public/dist
+
+# Compiled output
+/lib
+/es
+/esm
+/tmp
+/temp
+/out
+
+# Logs
+/npm-debug.log*
+.yarn-debug.log*
+.yarn-integrity
+.npmrc
+.yarnrc
+
+# Environment variables
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Editor directories and files
+.idea/             # JetBrains products (WebStorm, IntelliJ, etc.)
+.vscode/           # VS Code
+*.iml              # IntelliJ IDEA
+*.swp              # Vim swap files
+*.swo              # Vim swap files
+.DS_Store          # macOS folder metadata
+Thumbs.db          # Windows thumbnail cache
+npm-debug.log      # npm debug logs
+yarn-error.log     # yarn error logs
+
+# Optional: if you have specific secrets or credentials not in .env
+# /config/secrets.js
+# /private/keys
+
+# OS generated files
+.Trashes
+ehthumbs.db
+.Spotlight-V100
+.AppleDouble
+.LSOverride
+
+# Build cache for specific tools
+.parcel-cache/
+.next/             # Next.js build output
+.nuxt/             # Nuxt.js build output
+.vuepress/dist/    # VuePress build output
+.svelte-kit/       # SvelteKit build output
+.electron-builder/ # Electron Builder
