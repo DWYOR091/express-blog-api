@@ -9,14 +9,15 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const sendEmail = async (to, subject, text, html) => {
+const sendEmail = async (to, subject, code, content) => {
     try {
         const mailOptions = {
             from: emailUser,
             to: to,
             subject: subject,
-            text: text,
-            html: html
+            html: `
+            <h2>Use this bellow code to ${content}:<h2>
+            <p>${code}<p>`
         }
 
         const info = await transporter.sendMail(mailOptions)

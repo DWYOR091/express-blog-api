@@ -15,4 +15,9 @@ const verifyEmail = [
     check('email').isEmail().withMessage('invalid email').notEmpty().withMessage('Email is required'),
 ]
 
-module.exports = { signupValidator, signinValidator, verifyEmail }
+const verifyUser = [
+    check('email').isEmail().withMessage('invalid email').notEmpty().withMessage('Email is required'),
+    check('code').notEmpty().withMessage('Code is required')
+]
+
+module.exports = { signupValidator, signinValidator, verifyEmail, verifyUser }
