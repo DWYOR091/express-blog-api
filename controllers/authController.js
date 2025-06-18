@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { hashPassword } = require('../utils')
+const { hashPassword, comparePassword, generateToken } = require('../utils')
 
 const signup = async (req, res, next) => {
     try {
@@ -11,7 +11,6 @@ const signup = async (req, res, next) => {
         }
 
         const hashedPassword = await hashPassword(password)
-
         await User.create({ name, email, password: hashedPassword, role })
         res.status(201).json({ code: 201, status: true, message: "user register successfully!" })
     } catch (error) {
@@ -19,12 +18,25 @@ const signup = async (req, res, next) => {
     }
 }
 
-const signin = async (req, res) => {
+const signin = async (req, res, next) => {
     try {
+        const { email, password } = req.body
+        const user = await User.findOne({ email })
+        if (!user) {
+            res.code = 404
+            throw new Error("notfound user!")
+        }
+        const isMatch = await comparePassword(password, user.password)
+        if (!isMatch) {
+            res.code = 401
+            throw new Error('invalid credentials!')
+        }
 
+        const token = await generateToken(user)
+
+        res.status(200).json({ code: 200, status: true, message: "Berhasil login", data: { token } })
     } catch (error) {
-        console.log(error.stack);
-        res.status(500).json({ message: error.message })
+        next(error)
     }
 }
 

@@ -1,9 +1,14 @@
 const { check } = require('express-validator')
 
-const authValidator = [
+const signupValidator = [
     check('name').notEmpty().withMessage('Name is required'),
     check('email').isEmail().withMessage('invalid email').notEmpty().withMessage('Email is required'),
     check('password').notEmpty().withMessage('Password is required')
 ]
 
-module.exports = authValidator
+const signinValidator = [
+    check('email').isEmail().withMessage('invalid email').notEmpty().withMessage('Email is required'),
+    check('password').notEmpty().withMessage('Password is required')
+]
+
+module.exports = { signupValidator, signinValidator }
