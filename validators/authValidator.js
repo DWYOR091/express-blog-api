@@ -11,4 +11,8 @@ const signinValidator = [
     check('password').notEmpty().withMessage('Password is required')
 ]
 
-module.exports = { signupValidator, signinValidator }
+const verifyEmail = [
+    check('email').isEmail().withMessage('invalid email').notEmpty().withMessage('Email is required'),
+]
+
+module.exports = { signupValidator, signinValidator, verifyEmail }

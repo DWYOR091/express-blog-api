@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true, minLength: 6 },
     //role 1: super admin, role 2: normal admin, role 3: user biasa,
     role: { type: Number, default: 3 },
+    verificationCode: String,
+    isVerify: { type: Boolean, default: false }
 }, { timestamps: true })
 
 const User = mongoose.model("user", userSchema)

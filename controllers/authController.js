@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { hashPassword, comparePassword, generateToken } = require('../utils')
+const { hashPassword, comparePassword, generateToken, generateCode, sendEmail } = require('../utils');
 
 const signup = async (req, res, next) => {
     try {
@@ -24,7 +24,7 @@ const signin = async (req, res, next) => {
         const user = await User.findOne({ email })
         if (!user) {
             res.code = 404
-            throw new Error("notfound user!")
+            throw new Error("user not found!")
         }
         const isMatch = await comparePassword(password, user.password)
         if (!isMatch) {
@@ -40,5 +40,35 @@ const signin = async (req, res, next) => {
     }
 }
 
+const verifyEmail = async (req, res, next) => {
+    try {
+        const { email } = req.body
+        console.log(email);
+        const user = await User.findOne({ email })
+        if (!user) {
+            res.code = 404
+            throw new Error("user not found")
+        }
+        const code = generateCode(6)
 
-module.exports = { signup, signin }
+        await sendEmail(email, "Email Verification Code", "", `
+            <h2>Use this bellow code to verify your account:<h2>
+            <p>${code}<p>
+            `)
+
+
+        user.verificationCode = code
+        user.isVerify = true
+        await user.save()
+
+
+
+
+        res.status(200).json({ code: 200, status: true, message: "user verification code sent successfully" })
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+module.exports = { signup, signin, verifyEmail }
