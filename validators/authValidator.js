@@ -20,4 +20,10 @@ const verifyUser = [
     check('code').notEmpty().withMessage('Code is required')
 ]
 
-module.exports = { signupValidator, signinValidator, verifyEmail, verifyUser }
+const recoverPasswordValidator = [
+    check('email').isEmail().withMessage('invalid email').notEmpty().withMessage('Email is required'),
+    check('code').notEmpty().withMessage('Code is required'),
+    check('password').notEmpty().withMessage('Password is required')
+]
+
+module.exports = { signupValidator, signinValidator, verifyEmail, verifyUser, recoverPasswordValidator }
