@@ -234,11 +234,8 @@ const updateProfile = async (req, res, next) => {
                 const isEmailExist = await User.findOne({ email: newEmail });
 
                 if (isEmailExist && String(isEmailExist._id) !== String(_id)) {
-                    return res.status(400).json({
-                        code: 400,
-                        status: false,
-                        message: "Email already used by another user!"
-                    });
+                    res.code = 400
+                    throw new Error("Email already used")
                 }
                 user.email = newEmail;
                 user.isVerify = false;
