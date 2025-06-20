@@ -63,4 +63,19 @@ const deleteCategory = async (req, res, next) => {
     }
 }
 
-module.exports = { addCategory, updateCategory, deleteCategory }
+const findAllCategory = async (req, res, next) => {
+    try {
+        const { q } = req.query
+        let query
+        if (q) {
+            const search = RegExp(q, 'i')
+            query = { title: search }
+        }
+        const categories = await Category.find(query)
+        res.status(200).json({ code: 200, status: true, message: "get all category successfully", data: { categories } })
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { addCategory, updateCategory, deleteCategory, findAllCategory }
