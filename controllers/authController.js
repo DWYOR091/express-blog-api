@@ -183,84 +183,84 @@ const changePassword = async (req, res, next) => {
     }
 }
 
-// const updateProfile = async (req, res, next) => {
-//     try {
-//         const { name, email } = req.body
-//         const { _id } = req.user
-//         const user = await User.findById(_id).select("-password -verificationCode -forgotPasswordCode")
-//         if (!user) {
-//             res.code = 404
-//             throw new Error("user not found!")
-//         }
-
-//         const isEmailExist = await User.findOne({ email })
-//         if (isEmailExist && email === isEmailExist.email && String(_id) !== String(isEmailExist._id)) {
-//             res.code = 400
-//             throw new Error("Email already used")
-//         }
-
-//         if (!email && email !== user.email) {
-//             user.isVerify = false
-//         }
-
-//         user.name = name ? name : user.name
-//         user.email = email ? email : user.email
-
-//         await user.save()
-//         res.status(200).json({
-//             code: 200, status: true, message: "update profile successfully", data: user
-//         })
-//     } catch (error) {
-//         next(error)
-//     }
-// }
-
 const updateProfile = async (req, res, next) => {
     try {
-        const { name, email } = req.body;
-        const { _id } = req.user;
-
-        const user = await User.findById(_id).select("-password -verificationCode -forgotPasswordCode");
-
+        const { name, email } = req.body
+        const { _id } = req.user
+        const user = await User.findById(_id).select("-password -verificationCode -forgotPasswordCode")
         if (!user) {
             res.code = 404
-            throw new Error("user not found")
+            throw new Error("user not found!")
         }
 
-        if (email !== undefined && email !== null && email !== user.email) {
-            const newEmail = email === "" ? user.email : email;
-
-            if (newEmail !== user.email && newEmail !== "") {
-                const isEmailExist = await User.findOne({ email: newEmail });
-
-                if (isEmailExist && String(isEmailExist._id) !== String(_id)) {
-                    res.code = 400
-                    throw new Error("Email already used")
-                }
-                user.email = newEmail;
-                user.isVerify = false;
-            }
+        const isEmailExist = await User.findOne({ email })
+        if (isEmailExist && email === isEmailExist.email && String(_id) !== String(isEmailExist._id)) {
+            res.code = 400
+            throw new Error("Email already used")
         }
 
-        if (name !== undefined && name !== null && name !== "") {
-            user.name = name;
+        if (!isEmailExist && email !== user.email && email !== "") {
+            user.isVerify = false
         }
 
-        await user.save();
+        user.name = name ? name : user.name
+        user.email = email ? email : user.email
 
-        return res.status(200).json({
-            code: 200,
-            status: true,
-            message: "Profile updated successfully!",
-            data: {
-                user
-            }
-        });
-
+        await user.save()
+        res.status(200).json({
+            code: 200, status: true, message: "update profile successfully", data: user
+        })
     } catch (error) {
-        next(error);
+        next(error)
     }
-};
+}
+
+// const updateProfile = async (req, res, next) => {
+//     try {
+//         const { name, email } = req.body;
+//         const { _id } = req.user;
+
+//         const user = await User.findById(_id).select("-password -verificationCode -forgotPasswordCode");
+
+//         if (!user) {
+//             res.code = 404
+//             throw new Error("user not found")
+//         }
+
+//         if (email !== undefined && email !== null && email !== user.email) {
+//             const newEmail = email === "" ? user.email : email;
+
+//             if (newEmail !== user.email && newEmail !== "") {
+//                 const isEmailExist = await User.findOne({ email: newEmail });
+
+//                 if (isEmailExist && String(isEmailExist._id) !== String(_id)) {
+//                     res.code = 400
+//                     throw new Error("Email already used")
+//                 }
+//                 user.email = newEmail;
+//                 user.isVerify = false;
+//             }
+//         }
+
+//         if (name !== undefined && name !== null && name !== "") {
+//             user.name = name;
+//         }
+
+//         await user.save();
+
+//         return res.status(200).json({
+//             code: 200,
+//             status: true,
+//             message: "Profile updated successfully!",
+//             data: {
+//                 user
+//             }
+//         });
+
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
 module.exports = {
     signup, signin, verifyEmail, verifyUser, forgotPassword, recoverPassword
