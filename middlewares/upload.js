@@ -15,7 +15,15 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage })
+const upload = multer({
+    storage, fileFilter: (req, file, callback) => {
+        if (file.mimetype === "image/jpg" || file.mimetype === "image/png" || file.mimetype === "image/jpeg") {
+            callback(null, true)
+        } else {
+            callback(new Error("File upload must be an image of type PNG, JPG, or JPEG"));
+        }
+    }
+})
 
 module.exports = upload
 
