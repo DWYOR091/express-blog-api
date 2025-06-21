@@ -4,7 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const connectMongodb = require('./init/mongodb')
 const morgan = require('morgan')
-const { authRoute, categoryRoute, fileRoute } = require('./routes')
+const { authRoute, categoryRoute, fileRoute, postRoute } = require('./routes')
 const { errorHandler, notFoundError } = require('./middlewares');
 
 
@@ -21,6 +21,7 @@ app.use(morgan('dev'))
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/category', categoryRoute)
 app.use('/api/v1/file', fileRoute)
+app.use('/api/v1/post', postRoute)
 
 //not found route
 app.use(notFoundError);
