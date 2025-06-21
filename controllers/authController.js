@@ -185,7 +185,7 @@ const changePassword = async (req, res, next) => {
 
 const updateProfile = async (req, res, next) => {
     try {
-        const { name, email } = req.body
+        const { name, email, profilPic } = req.body
         const { _id } = req.user
         const user = await User.findById(_id).select("-password -verificationCode -forgotPasswordCode")
         if (!user) {
@@ -205,7 +205,7 @@ const updateProfile = async (req, res, next) => {
 
         user.name = name ? name : user.name
         user.email = email ? email : user.email
-
+        user.profilPic = profilPic
         await user.save()
         res.status(200).json({
             code: 200, status: true, message: "update profile successfully", data: user
@@ -262,7 +262,22 @@ const updateProfile = async (req, res, next) => {
 //     }
 // };
 
+const currentUser = async (req, res, next) => {
+    try {
+        const { _id } = req.user
+        const user = await User.findById(_id)
+            .select('-password -verificationCode -forgotPasswordCode')
+            .populate('profilPic')
+        if (!user) {
+            res.code = 404
+            throw new Error("user not found")
+        }
+        res.status(200).json({ code: 200, status: true, message: "get current user success", data: { user } })
+    } catch (error) {
+        next(error)
+    }
+}
 module.exports = {
     signup, signin, verifyEmail, verifyUser, forgotPassword, recoverPassword
-    , changePassword, updateProfile
+    , changePassword, updateProfile, currentUser
 }

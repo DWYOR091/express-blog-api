@@ -13,4 +13,5 @@ router.post('/signup', signupValidator, validate, authController.signup)
     .post('/recover-password', recoverPasswordValidator, validate, authController.recoverPassword)
     .post('/change-password', isAuth, changePassValidator, validate, authController.changePassword)
     .put('/update-profile', isAuth, updateProfileValidator, validate, authController.updateProfile)
+    .get('/current-user', isAuth, authController.currentUser)
 module.exports = router

@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
     role: { type: Number, default: 3 },
     verificationCode: String,
     forgotPasswordCode: String,
-    isVerify: { type: Boolean, default: false }
+    isVerify: { type: Boolean, default: false },
+    profilPic: { type: mongoose.Types.ObjectId, ref: 'file', required: true }
 }, { timestamps: true })
 
 const User = mongoose.model("user", userSchema)

@@ -3,7 +3,7 @@ const { jwtSecretKey } = require('../config/kyes')
 const isAuth = (req, res, next) => {
     try {
         const authorization = req.headers.authorization && req.headers.authorization.split(" ")
-        if (!authorization) {
+        if (!authorization || authorization[0] !== "Bearer") {
             res.code = 401
             throw new Error("Unauthorization!")
         }
