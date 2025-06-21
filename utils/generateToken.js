@@ -9,7 +9,7 @@ const generateToken = async (user) => {
         role: user.role
     },
         jwtSecretKey,
-        { expiresIn: "1h" })
+        { expiresIn: "12h" })
 
     return token
 }

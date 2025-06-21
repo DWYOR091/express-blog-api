@@ -65,17 +65,43 @@ const deleteCategory = async (req, res, next) => {
 
 const findAllCategory = async (req, res, next) => {
     try {
-        const { q } = req.query
+        const { q, size, page } = req.query
+        const pageNumber = parseInt(page)
+        const sizeNumber = parseInt(size)
+
         let query
         if (q) {
             const search = RegExp(q, 'i')
             query = { title: search }
         }
-        const categories = await Category.find(query)
-        res.status(200).json({ code: 200, status: true, message: "get all category successfully", data: { categories } })
+
+        const totalCategory = await Category.countDocuments();
+        const pages = Math.ceil(totalCategory / sizeNumber)
+
+        const categories = await Category.find(query).skip((pageNumber - 1) * sizeNumber).limit(sizeNumber)
+
+        res.status(200).json({ code: 200, status: true, message: "get all category successfully", data: { categories, total: totalCategory, pages } })
     } catch (error) {
         next(error)
     }
 }
 
-module.exports = { addCategory, updateCategory, deleteCategory, findAllCategory }
+const findOneCategory = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const category = await Category.findById(id)
+        if (!category) {
+            throw new Error("category not found")
+        }
+
+        res.status(200).json({
+            code: 200, status: true, message: "Get one category successfully", data: {
+                category
+            }
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { addCategory, updateCategory, deleteCategory, findAllCategory, findOneCategory }
