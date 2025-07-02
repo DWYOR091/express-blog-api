@@ -6,7 +6,7 @@ const connectMongodb = require('./init/mongodb')
 const morgan = require('morgan')
 const { authRoute, categoryRoute, fileRoute, postRoute } = require('./routes')
 const { errorHandler, notFoundError } = require('./middlewares');
-
+const cors = require('cors')
 
 //init app
 const app = express()
@@ -16,6 +16,9 @@ connectMongodb()
 app.use(express.json({ limit: "500mb" }))
 app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }))
 app.use(morgan('dev'))
+
+//cors
+app.use(cors({ origin: ["http://localhost:5173", "http://127.0.0.1:5173"] }))
 
 //routes section
 app.use('/api/v1/auth', authRoute)

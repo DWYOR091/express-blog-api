@@ -3,11 +3,17 @@ const { hashPassword, comparePassword, generateToken, generateCode, sendEmail } 
 
 const signup = async (req, res, next) => {
     try {
-        const { name, email, password, role } = req.body
+        const { name, email, password, role, confirmPassword } = req.body
         const isEmailExist = await User.findOne({ email })
         if (isEmailExist) {
             res.code = 400
             throw new Error('Email already exist')
+        }
+        console.log(confirmPassword);
+
+        if (confirmPassword !== password) {
+            res.code = 400
+            throw new Error('Password doesnt match')
         }
 
         const hashedPassword = await hashPassword(password)
@@ -23,12 +29,12 @@ const signin = async (req, res, next) => {
         const { email, password } = req.body
         const user = await User.findOne({ email })
         if (!user) {
-            res.code = 404
-            throw new Error("user not found!")
+            res.code = 401
+            throw new Error("invalid credential!")
         }
 
         if (user.isVerify === false) {
-            res.code = 404
+            res.code = 403
             throw new Error("user must be verify first")
         }
 
