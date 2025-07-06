@@ -22,7 +22,6 @@ const addCategory = async (req, res, next) => {
 
 const updateCategory = async (req, res, next) => {
     try {
-        const { _id } = req.user
         const { title, description } = req.body
         const { id } = req.params
         const category = await Category.findById(id)
@@ -32,7 +31,8 @@ const updateCategory = async (req, res, next) => {
         }
 
         const isTitleExist = await Category.findOne({ title })
-        if (title === isTitleExist.title && String(id) !== String(isTitleExist._id)) {
+        console.log(isTitleExist);
+        if (isTitleExist && String(id) !== String(isTitleExist._id)) {
             res.code = 400
             throw new Error("title already exist")
         }
@@ -66,8 +66,8 @@ const deleteCategory = async (req, res, next) => {
 const findAllCategory = async (req, res, next) => {
     try {
         const { q, size, page } = req.query
-        const pageNumber = parseInt(page)
-        const sizeNumber = parseInt(size)
+        const pageNumber = parseInt(page) || 1
+        const sizeNumber = parseInt(size) || 5
 
         let query
         if (q) {
@@ -75,7 +75,7 @@ const findAllCategory = async (req, res, next) => {
             query = { title: search }
         }
 
-        const totalCategory = await Category.countDocuments();
+        const totalCategory = await Category.countDocuments(query);
         const pages = Math.ceil(totalCategory / sizeNumber)
 
         const categories = await Category.find(query).skip((pageNumber - 1) * sizeNumber).limit(sizeNumber)

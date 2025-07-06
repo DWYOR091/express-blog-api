@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const { authRoute, categoryRoute, fileRoute, postRoute } = require('./routes')
 const { errorHandler, notFoundError } = require('./middlewares');
 const cors = require('cors')
+const path = require('path')
 
 //init app
 const app = express()
@@ -20,6 +21,8 @@ app.use(morgan('dev'))
 //cors
 app.use(cors({ origin: ["http://localhost:5173", "http://127.0.0.1:5173"] }))
 
+//static file
+app.use("/image", express.static(path.join(__dirname, "uploads")))
 //routes section
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/category', categoryRoute)

@@ -27,7 +27,8 @@ const signup = async (req, res, next) => {
 const signin = async (req, res, next) => {
     try {
         const { email, password } = req.body
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email }).select("+password");
+
         if (!user) {
             res.code = 401
             throw new Error("invalid credential!")
@@ -45,8 +46,9 @@ const signin = async (req, res, next) => {
         }
 
         const token = await generateToken(user)
-
-        res.status(200).json({ code: 200, status: true, message: "Berhasil login", data: { token } })
+        const userWithoutPassword = user.toObject()
+        delete userWithoutPassword.password
+        res.status(200).json({ code: 200, status: true, message: "Berhasil login", data: { token, user: userWithoutPassword } })
     } catch (error) {
         next(error)
     }
