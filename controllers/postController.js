@@ -1,4 +1,6 @@
 const { File, Post, Category } = require("../models")
+const path = require("path")
+const fs = require("fs")
 
 const addPost = async (req, res, next) => {
     try {
@@ -59,13 +61,22 @@ const updatePost = async (req, res, next) => {
 const deletePost = async (req, res, next) => {
     try {
         const { id } = req.params
-        const checkPost = await Post.findById(id)
+        const checkPost = await Post.findById(id).populate("file")
+        const nameFile = checkPost.file.name
         if (!checkPost) {
             res.code = 404
             throw new Error("Post not found")
         }
 
+        await File.findByIdAndDelete(checkPost.file)
         await Post.findByIdAndDelete(id)
+
+        const filePath = path.join(__dirname, '..', 'uploads', nameFile)
+        fs.unlink(filePath, (err) => {
+            if (err) throw err
+            console.log("file was deleted")
+        })
+
         res.status(200).json({ code: 200, status: true, message: "post deleted successfully" })
     } catch (error) {
         next(error)
@@ -84,7 +95,7 @@ const findAllPost = async (req, res, next) => {
             query = { title: search }
         }
 
-        const posts = await Post.find(query)
+        const posts = await Post.find(query).populate("category").populate("file")
             .skip((pageNumber - 1) * sizeNumber)
             .limit(sizeNumber)
 
