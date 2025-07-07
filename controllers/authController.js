@@ -34,10 +34,10 @@ const signin = async (req, res, next) => {
             throw new Error("invalid credential!")
         }
 
-        if (user.isVerify === false) {
-            res.code = 403
-            throw new Error("user must be verify first")
-        }
+        // if (user.isVerify === false) {
+        //     res.code = 403
+        //     throw new Error("user must be verify first")
+        // }
 
         const isMatch = await comparePassword(password, user.password)
         if (!isMatch) {
@@ -171,6 +171,7 @@ const changePassword = async (req, res, next) => {
         }
 
         const match = await comparePassword(oldPassword, user.password)
+        console.log(match);
         if (!match) {
             res.code = 400
             throw new Error("Old password doesnt match")
