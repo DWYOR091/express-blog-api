@@ -29,7 +29,7 @@
 .yarnrc
 
 # Environment variables
-.env
+# .env
 .env.development.local
 .env.test.local
 .env.production.local
@@ -63,4 +63,4 @@ ehthumbs.db
 .nuxt/             # Nuxt.js build output
 .vuepress/dist/    # VuePress build output
 .svelte-kit/       # SvelteKit build output
-.electron-builder/ # Electron Builder
+.electron-builder/ # Electron Builder.env
