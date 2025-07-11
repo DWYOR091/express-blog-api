@@ -64,3 +64,4 @@ ehthumbs.db
 .vuepress/dist/    # VuePress build output
 .svelte-kit/       # SvelteKit build output
 .electron-builder/ # Electron Builder.env
+.vercel

@@ -29,6 +29,10 @@ app.use('/api/v1/category', categoryRoute)
 app.use('/api/v1/file', fileRoute)
 app.use('/api/v1/post', postRoute)
 
+app.get('/', (req, res) => {
+    res.send("hello")
+})
+
 //not found route
 app.use(notFoundError);
 
