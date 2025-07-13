@@ -1,6 +1,7 @@
 const { File, Post, Category } = require("../models")
 const path = require("path")
 const fs = require("fs")
+const cloudinary = require("../utils/cloudinary")
 
 const addPost = async (req, res, next) => {
     try {
@@ -62,20 +63,23 @@ const deletePost = async (req, res, next) => {
     try {
         const { id } = req.params
         const checkPost = await Post.findById(id).populate("file")
-        const nameFile = checkPost.file.name
         if (!checkPost) {
             res.code = 404
             throw new Error("Post not found")
         }
 
-        await File.findByIdAndDelete(checkPost.file)
+        if (checkPost.file) {
+            await cloudinary.uploader.destroy(checkPost.file.public_id)
+            await File.findByIdAndDelete(checkPost.file._id)
+        }
+
         await Post.findByIdAndDelete(id)
 
-        const filePath = path.join(__dirname, '..', 'uploads', nameFile)
-        fs.unlink(filePath, (err) => {
-            if (err) throw err
-            console.log("file was deleted")
-        })
+        // const filePath = path.join(__dirname, '..', 'uploads', nameFile)
+        // fs.unlink(filePath, (err) => {
+        //     if (err) throw err
+        //     console.log("file was deleted")
+        // })
 
         res.status(200).json({ code: 200, status: true, message: "post deleted successfully" })
     } catch (error) {

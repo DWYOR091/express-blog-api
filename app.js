@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }))
 app.use(morgan('dev'))
 
 //cors
-app.use(cors({ origin: ["http://localhost:5173", "http://127.0.0.1:5173"] }))
+app.use(cors({ origin: ["http://localhost:5173", "http://localhost:4173", "http://127.0.0.1:5173", "http://127.0.0.1:4173", "https://react-blog-app-mr.vercel.app"] }))
 
 //static file
 app.use("/image", express.static(path.join(__dirname, "uploads")))
@@ -32,6 +32,7 @@ app.use('/api/v1/post', postRoute)
 app.get('/', (req, res) => {
     res.send("hello")
 })
+
 
 //not found route
 app.use(notFoundError);
